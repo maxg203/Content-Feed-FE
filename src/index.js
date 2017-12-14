@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom';
 
 
 class ContentFeed extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            'items': []
+        }
+    }
     componentDidMount() {
         this.getItems();
     }
@@ -10,10 +17,23 @@ class ContentFeed extends React.Component {
     getItems() {
         fetch('http://localhost:8000/api/item/')
           .then(results => results.json())
-          .then(({ results }) => console.log(results));
+          .then(results => this.setState({'items': results}));
     }
     render() {
-        return null;
+        return (
+            <ul>
+                {this.state.items.map(function(item, index) {
+                    return (
+                        <div key={index}>
+                            <h1>{item.title}</h1>
+                            <p>{item.description}</p>
+                        </div>
+                    )
+                }
+
+                )}
+            </ul>
+        );
     }
 }
 
